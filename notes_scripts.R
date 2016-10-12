@@ -2,7 +2,6 @@ setwd("C:/Users/Tomi/testAutomation/measurements/combined_results/notes")
 library(ggplot2)
 library(gridExtra)
 
-
 #munch munch
 notes_appium <- read.csv("appium_notes.csv")
 notes_appium$toolname <- "Appium"
@@ -45,7 +44,6 @@ ggplot(notes_espresso, aes(x = runTime_seconds)) + geom_histogram()
 mean_espresso <- mean(notes_espresso$runTime_seconds)
 mean_espresso <- as.numeric(as.character(mean_espresso))
 
-
 mean_appium <- mean(notes_appium$runTime_seconds)
 mean_appium <- as.numeric(as.character(mean_appium))
 
@@ -57,16 +55,18 @@ mean_uiautomator <- as.numeric(as.character(mean_uiautomator))
 
 mean_tau <- mean(notes_tau$runTime_seconds)
 mean_tau <- as.numeric(as.character(mean_tau))
+
+
 #tehdään uusi dataframe
 means = data.frame(toolname = character(), time = numeric(), stringsAsFactors = FALSE)
 #lisätään eka rivi, pitää tehä eri tavalla
 #http://stackoverflow.com/questions/12614397/how-to-add-rows-to-empty-data-frames-with-header-in-r
-means[1, ] <- c("Espresso", 78.7586)
+means[1, ] <- c("Espresso", mean_espresso)
 #lisätään frameen muut rivit
-means = rbind(means, c("Appium", 506.3224))
-means = rbind(means, c("Robotium", 172.906))
-means = rbind(means, c("UiAutomator", 299.916))
-means = rbind(means, c("Tau", 296.1730769))
+means = rbind(means, c("Appium", mean_appium))
+means = rbind(means, c("Robotium", mean_robotium))
+means = rbind(means, c("UiAutomator", mean_uiautomator))
+means = rbind(means, c("Tau", mean_tau))
 #convert time column to numeric
 means[, 2] <- as.data.frame(sapply(means[, 2], as.numeric))
 means$time <- as.numeric(as.character(means$time))
@@ -76,4 +76,14 @@ means[,'time'] <- as.numeric(as.character(means[,'time']))
 ggplot(means, aes(x = toolname, y = time)) + geom_bar(stat = "identity")
 
 qplot(x = toolname, y = time, data = means) + geom_histogram(binwidth = 1)
+
+
+#cohen's d
+
+#install effsize for cohen's d etc, change path to where you have the git repo
+install.packages("effsize", lib = "C:/Users/Tomi/R/gradu_r/effsize_0.6.4")
+library(effsize, lib.loc = "C:/Users/Tomi/R/gradu_r/effsize_0.6.4")
+
+appium_espresso <- rbind(notes_appium, notes_espresso)
+cohen.d(mean(appium_espresso$runTime_seconds), appium_espresso$runTime_seconds)
 
