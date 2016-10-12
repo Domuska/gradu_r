@@ -83,7 +83,20 @@ qplot(x = toolname, y = time, data = means) + geom_histogram(binwidth = 1)
 #install effsize for cohen's d etc, change path to where you have the git repo
 install.packages("effsize", lib = "C:/Users/Tomi/R/gradu_r/effsize_0.6.4")
 library(effsize, lib.loc = "C:/Users/Tomi/R/gradu_r/effsize_0.6.4")
+#https://cran.r-project.org/web/packages/effsize/effsize.pdf
 
 appium_espresso <- rbind(notes_appium, notes_espresso)
-cohen.d(mean(appium_espresso$runTime_seconds), appium_espresso$runTime_seconds)
+appium_espresso <- data.frame(notes_appium$toolname, notes_appium$runTime_seconds)
+#appium_espresso <- cbind(notes_espresso$toolname, notes_espresso$runTime_seconds)
+appium_espresso <- rbind(appium_espresso, notes_espresso[1,])
+
+appium_espresso <- read.csv("appium_espresso.csv")
+
+#en tiiä mitä tällä yritetään, ei toimi
+cohen.d(d = mean(appium_espresso$runTime_seconds), f = appium_espresso$runTime_seconds)
+#cohenin d:n saa varmaan tällä:
+cohen.d(f = notes_espresso$runTime_seconds, d = notes_appium$runTime_seconds)
+#cohenin d mikan excelkaavion perusteella
+(mean(notes_appium$runTime_seconds) - mean(notes_espresso$runTime_seconds)) / sd(appium_espresso$runTime_seconds)
+
 
