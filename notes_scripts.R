@@ -114,11 +114,13 @@ cohen.d(d = mean(appium_espresso$runTime_seconds), f = appium_espresso$runTime_s
 #cohenin d:n saa varmaan tällä, ei oikeesti:
 cohen.d(f = notes_espresso$runTime_seconds, d = notes_appium$runTime_seconds)
 
+
+
 #tehty kattomalla dokumentaation esimerkkiä
 d = (c(notes_appium$runTime_seconds, notes_espresso$runTime_seconds))
 f = rep(c("Appium","Espresso"), each=50)
 
-#calculate cohen's d
+#REAL STUFFS ARE IN HERE calculate cohen's d
 cohen.d(notes_appium$runTime_seconds, notes_espresso$runTime_seconds)
 cohen.d(notes_tau$runTime_seconds, notes_robotium$runTime_seconds)
 cohen.d(notes_uiautomator$runTime_seconds, notes_tau$runTime_seconds)
