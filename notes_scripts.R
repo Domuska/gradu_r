@@ -130,4 +130,44 @@ cohen.d(notes_tau$runTime_seconds, notes_robotium$runTime_seconds)
 cohen.d(d,f)
 
 
+#calculate failure rates and such
+#calculate failures
+#first the frames with failures
+appium_frame_f <- read.csv("appium_notes.csv")
+#get number of rows in the frame that has more than 0 failures (a new frame is created inside parantheses)
+appium_failures = nrow(appium_frame_f[appium_frame_f$failures > 0,])
+
+
+espresso_frame_f <- read.csv("espresso_notes.csv")
+#get number of rows in the frame that has more than 0 failures (a new frame is created inside parantheses)
+espresso_failures = nrow(espresso_frame_f[espresso_frame_f$failures > 0,])
+
+robotium_frame_f <- read.csv("robotium_notes.csv")
+#get number of rows in the frame that has more than 0 failures (a new frame is created inside parantheses)
+robotium_failures = nrow(robotium_frame_f[robotium_frame_f$failures > 0,])
+
+uiautomator_frame_f <- read.csv("uiautomator_notes.csv")
+#get number of rows in the frame that has more than 0 failures (a new frame is created inside parantheses)
+uiautomator_failures = nrow(uiautomator_frame_f[uiautomator_frame_f$failures > 0,])
+
+tau_frame_f <- read.csv("tau_amaze.csv")
+tau_failures <- 
+  
+espresso_failures
+appium_failures
+robotium_failures
+uiautomator_failures
+tau_failures
+
+fail_percentage_espresso = espresso_failures / nrow(espresso_frame_f) * 100
+fail_percentage_appium = appium_failures / nrow(appium_frame_f) * 100
+fail_percentage_robotium = robotium_failures / nrow(robotium_frame_f) * 100
+fail_percentage_uiautomator = uiautomator_failures / nrow(uiautomator_frame_f) * 100
+
+fail_percentage_espresso
+fail_percentage_appium
+fail_percentage_robotium
+fail_percentage_uiautomator
+
+
 
