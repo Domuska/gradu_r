@@ -52,7 +52,9 @@ tau_frame$toolname <- "Tau"
 combined_frame <- rbind(appium_frame, espresso_frame, robotium_frame, uiautomator_frame, tau_frame)
 
 ggplot(combined_frame, aes(x = toolname, y = runTime_seconds)) +
-  geom_boxplot()
+  geom_boxplot() + 
+  xlab("Name of the tool") + 
+  ylab("Total run time in seconds")
 
 
 
@@ -89,9 +91,10 @@ ggplot(means, aes(x = toolname, y = time, fill = toolname)) + geom_bar(stat = "i
 ggplot(means, aes(x = toolname, y = time)) + geom_point(stat = "identity")
 
 
-#cohen's D
-library(effsize, lib.loc = "C:/Gradu/gradu_r/effsize_0.6.4")
+#cohen's D for run time
 library(effsize, lib.loc = "C:/Users/Tomi/R/gradu_r/effsize_0.6.4")
+library(effsize, lib.loc = "C:/Gradu/gradu_r/effsize_0.6.4")
+
 
 #calculate the cohen's d compared to the fastest tool
 cohen.d(appium_frame$runTime_seconds, espresso_frame$runTime_seconds)
@@ -101,3 +104,42 @@ cohen.d(tau_frame$runTime_seconds, espresso_frame$runTime_seconds)
 
 #other interesting cohen's d values
 cohen.d(robotium_frame$runTime_seconds, tau_frame$runTime_seconds)
+
+
+#calculate failures
+#first the frames with failures
+appium_frame_f <- read.csv("appium_amaze.csv")
+#get number of rows in the frame that has more than 0 failures (a new frame is created inside parantheses)
+appium_failures = nrow(appium_frame_f[appium_frame_f$failures > 0,])
+
+
+espresso_frame_f <- read.csv("espresso_amaze.csv")
+#get number of rows in the frame that has more than 0 failures (a new frame is created inside parantheses)
+espresso_failures = nrow(espresso_frame_f[espresso_frame_f$failures > 0,])
+
+robotium_frame_f <- read.csv("robotium_amaze.csv")
+#get number of rows in the frame that has more than 0 failures (a new frame is created inside parantheses)
+robotium_failures = nrow(robotium_frame_f[robotium_frame_f$failures > 0,])
+
+uiautomator_frame_f <- read.csv("uiautomator_amaze.csv")
+#get number of rows in the frame that has more than 0 failures (a new frame is created inside parantheses)
+uiautomator_failures = nrow(uiautomator_frame_f[uiautomator_frame_f$failures > 0,])
+
+tau_frame_f <- read.csv("tau_amaze.csv")
+tau_failures <- 
+
+espresso_failures
+appium_failures
+robotium_failures
+uiautomator_failures
+tau_failures
+
+fail_percentage_espresso = espresso_failures / nrow(espresso_frame_f) * 100
+fail_percentage_appium = appium_failures / nrow(appium_frame_f) * 100
+fail_percentage_robotium = robotium_failures / nrow(robotium_frame_f) * 100
+fail_percentage_uiautomator = uiautomator_failures / nrow(uiautomator_frame_f) * 100
+
+fail_percentage_espresso
+fail_percentage_appium
+fail_percentage_robotium
+fail_percentage_uiautomator
