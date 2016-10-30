@@ -41,20 +41,26 @@ grid.arrange(appium_plot, espresso_plot, robotium_plot, uiautomator_plot, tau_pl
 
 
 #boxplots
-
 #add tool names to the frames
-appium_frame$toolname <- "Appium"
-espresso_frame$toolname <- "Espresso"
-robotium_frame$toolname <- "Robotium"
-uiautomator_frame$toolname <- "UiAutomator"
-tau_frame$toolname <- "Tau"
+appium_frame$toolname <- "Appium Amaze"
+espresso_frame$toolname <- "Espresso Amaze"
+robotium_frame$toolname <- "Robotium Amaze"
+uiautomator_frame$toolname <- "UiAutomator Amaze"
+tau_frame$toolname <- "Tau Amaze"
 
-combined_frame <- rbind(appium_frame, espresso_frame, robotium_frame, uiautomator_frame, tau_frame)
+combined_frame_amaze <- rbind(appium_frame, espresso_frame, robotium_frame, uiautomator_frame, tau_frame)
+
+#save .png to directory below
+setwd("C:/Gradu/gradu_r/pictures")
+setwd("C:/R/gradu_r/pictures")
+png(filename="amaze_boxplot.png")
 
 ggplot(combined_frame, aes(x = toolname, y = runTime_seconds)) +
   geom_boxplot() + 
   xlab("Name of the tool") + 
-  ylab("Total run time in seconds")
+  ylab("Test set run time in seconds")
+
+dev.off()
 
 
 
@@ -74,6 +80,12 @@ mean_uiautomator <- as.numeric(as.character(mean_uiautomator))
 
 mean_tau <- mean(tau_frame$runTime_seconds)
 mean_tau <- as.numeric(as.character(mean_tau))
+
+mean_appium
+mean_espresso
+mean_tau
+mean_robotium
+mean_uiautomator
 
 
 means = data.frame(toolname = character(), time = numeric(), stringsAsFactors = FALSE)
