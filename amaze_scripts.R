@@ -110,6 +110,7 @@ library(effsize, lib.loc = "C:/Gradu/gradu_r/effsize_0.6.4")
 
 #calculate the cohen's d compared to the fastest tool
 cohen.d(appium_frame$runTime_seconds, espresso_frame$runTime_seconds)
+cohen.d(espresso_frame$runTime_seconds, espresso_frame$runTime_seconds)
 cohen.d(robotium_frame$runTime_seconds, espresso_frame$runTime_seconds)
 cohen.d(uiautomator_frame$runTime_seconds, espresso_frame$runTime_seconds)
 cohen.d(tau_frame$runTime_seconds, espresso_frame$runTime_seconds)
