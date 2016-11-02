@@ -1,3 +1,5 @@
+
+
 setwd("C:/Users/Tomi/testAutomation/measurements/combined_results/amaze")
 setwd("C:/Gradu/android_testing_results/combined_results/amaze")
 library(ggplot2)
@@ -42,20 +44,20 @@ grid.arrange(appium_plot, espresso_plot, robotium_plot, uiautomator_plot, tau_pl
 
 #boxplots
 #add tool names to the frames
-appium_frame$toolname <- "Appium Amaze"
-espresso_frame$toolname <- "Espresso Amaze"
-robotium_frame$toolname <- "Robotium Amaze"
-uiautomator_frame$toolname <- "UiAutomator Amaze"
-tau_frame$toolname <- "Tau Amaze"
+appium_frame$toolname <- "AA"
+espresso_frame$toolname <- "EA"
+robotium_frame$toolname <- "RA"
+uiautomator_frame$toolname <- "UA"
+tau_frame$toolname <- "TA"
 
 combined_frame_amaze <- rbind(appium_frame, espresso_frame, robotium_frame, uiautomator_frame, tau_frame)
 
 #save .png to directory below
 setwd("C:/Gradu/gradu_r/pictures")
-setwd("C:/R/gradu_r/pictures")
+setwd("C:/users/Tomi/R/gradu_r/pictures")
 png(filename="amaze_boxplot.png")
 
-ggplot(combined_frame, aes(x = toolname, y = runTime_seconds)) +
+ggplot(combined_frame_amaze, aes(x = toolname, y = runTime_seconds)) +
   geom_boxplot() + 
   xlab("Name of the tool") + 
   ylab("Test set run time in seconds")

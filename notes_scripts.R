@@ -8,25 +8,25 @@ library(gridExtra)
 #munch munch, clean rows with failures from the results
 notes_appium <- read.csv("appium_notes.csv")
 notes_appium <- notes_appium[!(notes_appium$failures != 0),]
-notes_appium$toolname <- "Appium Notes"
+notes_appium$toolname <- "AN"
 
 notes_espresso <- read.csv("espresso_notes.csv")
 notes_espresso <- notes_espresso[!(notes_espresso$failures != 0),]
-notes_espresso$toolname <- "Espresso Notes"
+notes_espresso$toolname <- "EN"
 
 notes_robotium <- read.csv("robotium_notes.csv")
 notes_robotium <- notes_robotium[!(notes_robotium$failures != 0),]
-notes_robotium$toolname <- "Robotium Notes"
+notes_robotium$toolname <- "RN"
 
 notes_uiautomator <- read.csv("uiautomator_notes.csv")
 notes_uiautomator <- notes_uiautomator[!(notes_uiautomator$failures != 0),]
-notes_uiautomator$toolname <- "UiAutomator Notes"
+notes_uiautomator$toolname <- "UN"
 
 notes_tau <- read.csv("tau_notes.csv")
-notes_tau$toolname <- "Tau Notes"
+notes_tau$toolname <- "TN"
 
 #data together
-notes_combined <- rbind(notes_appium, notes_espresso, 
+combined_frame_notes <- rbind(notes_appium, notes_espresso, 
                         notes_robotium, notes_uiautomator, notes_tau)
 
 
@@ -48,7 +48,7 @@ grid.arrange(appium_runtime, espresso_runtime, robotium_runtime, tau_runtime, ui
 
 #boxplot from all the tools, saved to directory below
 setwd("C:/Gradu/gradu_r/pictures")
-setwd("C:/R/gradu_r/pictures")
+setwd("C:/users/Tomi/R/gradu_r/pictures")
 png(filename="notes_boxplot.png")
 
 ggplot(notes_combined, aes(x = toolname, y = runTime_seconds)) +

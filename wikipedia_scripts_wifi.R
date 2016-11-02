@@ -4,7 +4,7 @@
 setwd("C:/Users/Tomi/testAutomation/measurements/combined_results/wikipedia")
 setwd("C:/Gradu/android_testing_results/combined_results/wikipedia")
 library(ggplot2)
-library(gridExtra)8
+library(gridExtra)
 
 #read native wikipedia frames, ignore rows with failures
 
@@ -46,6 +46,26 @@ uiautomator_frame_n_4g <- uiautomator_frame_n_4g[!(uiautomator_frame_n_4g$failur
 
 tau_frame_n_4g <- read.csv("tau_4g_native.csv")
 
+#some geom bars of the results
+qplot(x = runTime_seconds, data = appium_frame_n, binwidth = 5)
+qplot(x = runTime_seconds, data = espresso_frame_n, binwidth = 1)
+t.test(appium_frame_n$runTime_seconds, espresso_frame_n$runTime_seconds)
+
+#uiautomator
+qplot(x = runTime_seconds, data = uiautomator_frame_n_4g, binwidth = 10)
+qplot(x = runTime_seconds, data = uiautomator_frame_n_5g, binwidth = 10)
+t.test(uiautomator_frame_n_4g$runTime_seconds, uiautomator_frame_n_5g$runTime_seconds)
+
+#espresso
+qplot(x = runTime_seconds, data = espresso_frame_n, binwidth = 1)
+qplot(x = runTime_seconds, data = espresso_frame_n_5g, binwidth = 1)
+t.test(espresso_frame_n$runTime_seconds, espresso_frame_n_5g$runTime_seconds)
+
+#tau, interesting plot on 4g
+qplot(x = runTime_seconds, data = tau_frame_n, binwidth = 5)
+qplot(x = runTime_seconds, data = tau_frame_n_4g, binwidth = 5)
+t.test(tau_frame_n_5g$runTime_seconds, tau_frame_n$runTime_seconds)
+
 #boxplots
 
 #add tool names to the frames (Appium Wiki Native Wifi etc)
@@ -75,34 +95,35 @@ combined_frame_wikipedia_n_5g <- rbind(appium_frame_n_5g, espresso_frame_n_5g, u
 combined_frame_wikipedia_n_4g <- rbind(appium_frame_n_4g, espresso_frame_n_4g, uiautomator_frame_n_4g, tau_frame_n_4g)
 
 #all 3 apps frames combined
-combined_frame_all_apps <- rbind(combined_frame_amaze, combined_frame_wikipedia_n, notes_combined)
+combined_frame_all_apps <- rbind(combined_frame_amaze, combined_frame_wikipedia_n, combined_frame_notes)
 
 
 #all network configurations combined
 combined_frame_all_networks <- rbind(combined_frame_wikipedia_n, combined_frame_wikipedia_n_5g, combined_frame_wikipedia_n_4g)
-                                     , levels = "AWN4", "EWN4", "TWN4", "UWN4")
+
+
 
 #save .png to directory below
 setwd("C:/Gradu/gradu_r/pictures")
-setwd("C:/R/gradu_r/pictures")
-png(filename="wikipedia_boxplot_native_wifi.png")
-
-#boxplot from the results, change the combined frame below as wished
-ggplot(combined_frame_all_networks, aes(x = toolname, y = runTime_seconds)) +
-  geom_boxplot() + 
-  xlab("Name of the tool") + 
-  ylab("Test set run time in seconds")
-
-dev.off()
-
+setwd("C:/users/Tomi/R/gradu_r/pictures")
 
 #boxplot from all apps frames combined
-png(filename="all_apps_boxplot_native_wifi.png", width = 1060)
 
-ggplot(combined_frame_all_apps, aes(x = toolname, y = runTime_seconds)) +
+########## CHANGE NAME OF THE FILE ##########
+png(filename="wikipedia_native_allnetworks_2_boxplot.png", width = 1060)
+
+#the scale_x_discrete and limits can be used to order of entries in x axis
+plot = ggplot(combined_frame_all_networks, aes(x = toolname, y = runTime_seconds)) +
   geom_boxplot() + 
-  xlab("Name of the tool") + 
+  xlab("Configuration") + 
   ylab("Test set run time in seconds")
+  #scale_x_discrete(limits = c("AWNW", "EWNW", "TWNW", "UWNW", "AWN5", "EWN5", "TWN5", "UWN5", "AWN4", "EWN4", "TWN4", "UWN4"))
+
+#write out just the plot, no modifications, entries grouped by name
+plot
+
+#modify the plot, order x-axis values in certain order, use this when all network types are compared
+plot + scale_x_discrete(limits = c("AWNW", "EWNW", "TWNW", "UWNW", "AWN5", "EWN5", "TWN5", "UWN5", "AWN4", "EWN4", "TWN4", "UWN4"))
 
 dev.off()
 
@@ -161,7 +182,21 @@ median(espresso_frame_n_4g$runTime_seconds)
 median(tau_frame_n_4g$runTime_seconds)
 median(uiautomator_frame_n_4g$runTime_seconds)
 
-#cohen's D for run time
+
+#other interesting means and medians
+
+#compare medians of all network types against each other
+median(combined_frame_wikipedia_n$runTime_seconds)
+median(combined_frame_wikipedia_n_5g$runTime_seconds)
+median(combined_frame_wikipedia_n_4g$runTime_seconds)
+
+mean(combined_frame_wikipedia_n$runTime_seconds)
+mean(combined_frame_wikipedia_n_5g$runTime_seconds)
+mean(combined_frame_wikipedia_n_4g$runTime_seconds)
+
+
+
+#cohen's D for run times
 library(effsize, lib.loc = "C:/Users/Tomi/R/gradu_r/effsize_0.6.4")
 library(effsize, lib.loc = "C:/Gradu/gradu_r/effsize_0.6.4")
 
@@ -184,6 +219,10 @@ cohen.d(appium_frame_n_4g$runTime_seconds, espresso_frame_n_4g$runTime_seconds)
 cohen.d(espresso_frame_n_4g$runTime_seconds, espresso_frame_n_4g$runTime_seconds)
 cohen.d(uiautomator_frame_n_4g$runTime_seconds, espresso_frame_n_4g$runTime_seconds)
 cohen.d(tau_frame_n_4g$runTime_seconds, espresso_frame_n_4g$runTime_seconds)
+
+#networks vs eachother
+cohen.d(uiautomator_frame_n_4g$runTime_seconds, uiautomator_frame_n_5g$runTime_seconds)
+
 
 
 #calculate failures
