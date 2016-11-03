@@ -82,11 +82,11 @@ mean_uiautomator <- as.numeric(as.character(mean_uiautomator))
 mean_tau <- mean(notes_tau$runTime_seconds)
 mean_tau <- as.numeric(as.character(mean_tau))
 
-mean_espresso
 mean_appium
+mean_espresso
 mean_robotium
-mean_uiautomator
 mean_tau
+mean_uiautomator
 
 #medians 
 median(notes_appium$runTime_seconds)
@@ -129,17 +129,9 @@ qplot(x = toolname, y = time, data = means) + geom_histogram(binwidth = 1)
 #install effsize for cohen's d etc, change path to where you have the git repo
 install.packages("effsize", lib = "C:/Users/Tomi/R/gradu_r/effsize_0.6.4")
 library(effsize, lib.loc = "C:/Users/Tomi/R/gradu_r/effsize_0.6.4")
+library(effsize, lib.loc = "C:/Gradu/gradu_r/effsize_0.6.4")
 #https://cran.r-project.org/web/packages/effsize/effsize.pdf
 
-#appium_espresso <- rbind(notes_appium, notes_espresso)
-appium_espresso <- data.frame(notes_appium$toolname, notes_appium$runTime_seconds)
-#appium_espresso <- cbind(notes_espresso$toolname, notes_espresso$runTime_seconds)
-appium_espresso <- rbind(appium_espresso, notes_espresso[1,])
-
-appium_espresso <- read.csv("appium_espresso.csv")
-
-#en tiiä mitä tällä yritetään, ei toimi
-cohen.d(d = mean(appium_espresso$runTime_seconds), f = appium_espresso$runTime_seconds)
 #cohenin d:n saa varmaan tällä, ei oikeesti:
 cohen.d(f = notes_espresso$runTime_seconds, d = notes_appium$runTime_seconds)
 
@@ -149,8 +141,14 @@ cohen.d(f = notes_espresso$runTime_seconds, d = notes_appium$runTime_seconds)
 d = (c(notes_appium$runTime_seconds, notes_espresso$runTime_seconds))
 f = rep(c("Appium","Espresso"), each=50)
 
-#REAL STUFFS ARE IN HERE calculate cohen's d
+#REAL THINGS ARE IN HERE calculate cohen's d
 cohen.d(notes_appium$runTime_seconds, notes_espresso$runTime_seconds)
+cohen.d(notes_espresso$runTime_seconds, notes_espresso$runTime_seconds)
+cohen.d(notes_robotium$runTime_seconds, notes_espresso$runTime_seconds)
+cohen.d(notes_tau$runTime_seconds, notes_espresso$runTime_seconds)
+cohen.d(notes_uiautomator$runTime_seconds, notes_espresso$runTime_seconds)
+
+
 cohen.d(notes_tau$runTime_seconds, notes_robotium$runTime_seconds)
 cohen.d(notes_uiautomator$runTime_seconds, notes_tau$runTime_seconds)
 cohen.d(notes_robotium$runTime_seconds, notes_espresso$runTime_seconds)
@@ -180,7 +178,8 @@ uiautomator_frame_f <- read.csv("uiautomator_notes.csv")
 uiautomator_failures = nrow(uiautomator_frame_f[uiautomator_frame_f$failures > 0,])
 
 tau_frame_f <- read.csv("tau_amaze.csv")
-tau_failures <- 
+#tau did not have any failures when the test suite was ran
+tau_failures <- 0
   
 espresso_failures
 appium_failures

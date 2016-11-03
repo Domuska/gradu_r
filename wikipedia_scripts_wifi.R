@@ -95,7 +95,7 @@ combined_frame_wikipedia_n_5g <- rbind(appium_frame_n_5g, espresso_frame_n_5g, u
 combined_frame_wikipedia_n_4g <- rbind(appium_frame_n_4g, espresso_frame_n_4g, uiautomator_frame_n_4g, tau_frame_n_4g)
 
 #all 3 apps frames combined
-combined_frame_all_apps <- rbind(combined_frame_amaze, combined_frame_wikipedia_n, combined_frame_notes)
+combined_frame_all_apps <- rbind(combined_frame_amaze, combined_frame_wikipedia_n, combined_frame_wikipedia_w, combined_frame_notes)
 
 
 #all network configurations combined
@@ -110,10 +110,10 @@ setwd("C:/users/Tomi/R/gradu_r/pictures")
 #boxplot from all apps frames combined
 
 ########## CHANGE NAME OF THE FILE ##########
-png(filename="wikipedia_native_allnetworks_2_boxplot.png", width = 1060)
+png(filename="all_apps_wikipedia_wifi_boxplot.png", width = 1060)
 
 #the scale_x_discrete and limits can be used to order of entries in x axis
-plot = ggplot(combined_frame_all_networks, aes(x = toolname, y = runTime_seconds)) +
+plot = ggplot(combined_frame_all_apps, aes(x = toolname, y = runTime_seconds)) +
   geom_boxplot() + 
   xlab("Configuration") + 
   ylab("Test set run time in seconds")
@@ -242,6 +242,8 @@ cohen.d(uiautomator_frame_n_4g$runTime_seconds, uiautomator_frame_n_5g$runTime_s
 
 #calculate failures
 
+#function takes in a frame that has all rows recorded, will get rows with failures in them and
+#calculate percentage of failed test runs
 print_fail_percentage <- function(test_frame){
   #get number of rows in the frame that has more than 0 failures (a new frame is created inside parantheses)
   frame_failures = nrow(test_frame[test_frame$failures > 0,])
