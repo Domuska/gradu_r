@@ -129,9 +129,9 @@ dev.off()
 
 
 
-#means & medians for the run times, dont draw plot in R since it is much more work than with Excel
+#means & medians & standard deviations for the run times, dont draw plot in R since it is much more work than with Excel
 
-#WIFI
+#WIFI means & medians
 mean_appium_n <- mean(appium_frame_n$runTime_seconds)
 mean_appium_n <- as.numeric(as.character(mean_appium_n))
 
@@ -154,6 +154,11 @@ median(espresso_frame_n$runTime_seconds)
 median(tau_frame_n$runTime_seconds)
 median(uiautomator_frame_n$runTime_seconds)
 
+sd(appium_frame_n$runTime_seconds)
+sd(espresso_frame_n$runTime_seconds)
+sd(tau_frame_n$runTime_seconds)
+sd(uiautomator_frame_n$runTime_seconds)
+
 #5G means & medians
 mean_appium_n_5g <- mean(appium_frame_n_5g$runTime_seconds)
 mean_espresso_n_5g <- mean(espresso_frame_n_5g$runTime_seconds)
@@ -168,7 +173,12 @@ mean_uiautomator_n_5g
 median(appium_frame_n_5g$runTime_seconds)  
 median(espresso_frame_n_5g$runTime_seconds)  
 median(tau_frame_n_5g$runTime_seconds)  
-median(uiautomator_frame_n_5g$runTime_seconds)  
+median(uiautomator_frame_n_5g$runTime_seconds)
+
+sd(appium_frame_n_5g$runTime_seconds)  
+sd(espresso_frame_n_5g$runTime_seconds)  
+sd(tau_frame_n_5g$runTime_seconds)  
+sd(uiautomator_frame_n_5g$runTime_seconds)
 
 
 #4G means & medians
@@ -181,6 +191,11 @@ median(appium_frame_n_4g$runTime_seconds)
 median(espresso_frame_n_4g$runTime_seconds)
 median(tau_frame_n_4g$runTime_seconds)
 median(uiautomator_frame_n_4g$runTime_seconds)
+
+sd(appium_frame_n_4g$runTime_seconds)
+sd(espresso_frame_n_4g$runTime_seconds)
+sd(tau_frame_n_4g$runTime_seconds)
+sd(uiautomator_frame_n_4g$runTime_seconds)
 
 
 #other interesting means and medians

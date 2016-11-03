@@ -88,6 +88,20 @@ mean_robotium
 mean_uiautomator
 mean_tau
 
+#medians 
+median(notes_appium$runTime_seconds)
+median(notes_espresso$runTime_seconds)
+median(notes_robotium$runTime_seconds)
+median(notes_tau$runTime_seconds)
+median(notes_uiautomator$runTime_seconds)
+
+
+#standard deviations
+sd(notes_appium$runTime_seconds)
+sd(notes_espresso$runTime_seconds)
+sd(notes_robotium$runTime_seconds)
+sd(notes_tau$runTime_seconds)
+sd(notes_uiautomator$runTime_seconds)
 
 #tehd‰‰n uusi dataframe
 means = data.frame(toolname = character(), time = numeric(), stringsAsFactors = FALSE)

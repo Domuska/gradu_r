@@ -66,7 +66,7 @@ dev.off()
 
 
 
-#means for the run times
+#means, medians, standard deviations for the run times
 
 mean_appium <- mean(appium_frame$runTime_seconds)
 mean_appium <- as.numeric(as.character(mean_appium))
@@ -103,6 +103,22 @@ ggplot(means, aes(x = toolname, y = time, fill = toolname)) + geom_bar(stat = "i
 #scale_x_continuous(breaks = seq(10, 80, 5), limits = c(10,80))
 
 ggplot(means, aes(x = toolname, y = time)) + geom_point(stat = "identity")
+
+
+#medians
+median(appium_frame$runTime_seconds)
+median(espresso_frame$runTime_seconds)
+median(robotium_frame$runTime_seconds)
+median(tau_frame$runTime_seconds)
+median(uiautomator_frame$runTime_seconds)
+
+#standard deviations
+sd(appium_frame$runTime_seconds)
+sd(espresso_frame$runTime_seconds)
+sd(robotium_frame$runTime_seconds)
+sd(tau_frame$runTime_seconds)
+sd(uiautomator_frame$runTime_seconds)
+
 
 
 #cohen's D for run time
