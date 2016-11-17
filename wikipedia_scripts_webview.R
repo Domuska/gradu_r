@@ -57,6 +57,7 @@ combined_frame_wikipedia_w_4g <- rbind(appium_frame_w_4g, espresso_frame_w_4g)
 
 #all networks combined
 combined_frame_all_networks <- rbind(combined_frame_wikipedia_w, combined_frame_wikipedia_w_5g, combined_frame_wikipedia_w_4g)
+combined_frame_wifi_4g_networks <- rbind(combined_frame_wikipedia_w, combined_frame_wikipedia_w_4g)
 
 
 #save .png to directory below
@@ -66,10 +67,10 @@ setwd("C:/users/Tomi/R/gradu_r/pictures")
 #boxplot from all apps frames combined
 
 ########## CHANGE NAME OF THE FILE ##########
-png(filename="wikipedia_webview_allnetworks_2_boxplot.png")
+png(filename="wikipedia_webview_wifi_4g_boxplot.png")
 
 #the scale_x_discrete and limits can be used to order of entries in x axis
-plot = ggplot(combined_frame_all_networks, aes(x = toolname, y = runTime_seconds)) +
+plot = ggplot(combined_frame_wifi_4g_networks, aes(x = toolname, y = runTime_seconds)) +
   geom_boxplot() + 
   xlab("Configuration") + 
   ylab("Test set run time in seconds")
@@ -84,7 +85,7 @@ plot + scale_x_discrete(limits = c("AWWW", "EWWW", "AWW5", "EWW5", "AWW4", "EWW4
 dev.off()
 
 
-#means, medians, standard deviations
+#means, medians, standard deviations, percentages
 
 mean(appium_frame_w$runTime_seconds)
 mean(appium_frame_w_4g$runTime_seconds)
@@ -94,13 +95,27 @@ mean(espresso_frame_w$runTime_seconds)
 mean(espresso_frame_w_4g$runTime_seconds)
 mean(espresso_frame_w_5g$runTime_seconds)
 
-median(appium_frame_w$runTime_seconds)
-median(appium_frame_w_4g$runTime_seconds)
-median(appium_frame_w_5g$runTime_seconds)
+appium_wifi_median <- median(appium_frame_w$runTime_seconds)
+appium_4g_median <- median(appium_frame_w_4g$runTime_seconds)
+appium_5g_median <- median(appium_frame_w_5g$runTime_seconds)
 
-median(espresso_frame_w$runTime_seconds)
-median(espresso_frame_w_4g$runTime_seconds)
-median(espresso_frame_w_5g$runTime_seconds)
+appium_wifi_median
+appium_4g_median
+appium_5g_median
+
+espresso_wifi_median <- median(espresso_frame_w$runTime_seconds)
+espresso_4g_median <- median(espresso_frame_w_4g$runTime_seconds)
+espresso_5g_median <- median(espresso_frame_w_5g$runTime_seconds)
+
+espresso_wifi_median
+espresso_4g_median
+espresso_5g_median
+
+#percentages
+
+appium_wifi_median / espresso_wifi_median * 100
+appium_4g_median / espresso_4g_median * 100
+appium_5g_median / espresso_5g_median *100
 
 sd(appium_frame_w$runTime_seconds)
 sd(appium_frame_w_4g$runTime_seconds)
@@ -116,7 +131,7 @@ sd(espresso_frame_w_5g$runTime_seconds)
 library(effsize, lib.loc = "C:/Users/Tomi/R/gradu_r/effsize_0.6.4")
 library(effsize, lib.loc = "C:/Gradu/gradu_r/effsize_0.6.4")
 
-#työkalujen vertailua
+#tyokalujen vertailua
 cohen.d(appium_frame_w$runTime_seconds, espresso_frame_w$runTime_seconds)
 
 #verkkojen vertailua
@@ -145,7 +160,13 @@ print_fail_percentage <- function(test_frame){
 appium_frame_w_f <- read.csv("appium_wifi_webview.csv")
 espresso_frame_w_f <- read.csv("espresso_wifi_webview.csv")
 
+#appium wifi failures
 print_fail_percentage(appium_frame_w_f)
+sum(appium_frame_w_f$failures > 0)
+nrow(appium_frame_w_f)
+#espresso wifi failures
+sum(espresso_frame_w_f$failures > 0)
+nrow(espresso_frame_w_f)
 print_fail_percentage(espresso_frame_w_f)
 
 #5G failures

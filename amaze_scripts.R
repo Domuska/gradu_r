@@ -106,11 +106,24 @@ ggplot(means, aes(x = toolname, y = time)) + geom_point(stat = "identity")
 
 
 #medians
-median(appium_frame$runTime_seconds)
-median(espresso_frame$runTime_seconds)
-median(robotium_frame$runTime_seconds)
-median(tau_frame$runTime_seconds)
-median(uiautomator_frame$runTime_seconds)
+appium_median <-median(appium_frame$runTime_seconds)
+espresso_median <- median(espresso_frame$runTime_seconds)
+robotium_median <- median(robotium_frame$runTime_seconds)
+tau_median <- median(tau_frame$runTime_seconds)
+uiautomator_median <- median(uiautomator_frame$runTime_seconds)
+
+appium_median
+espresso_median
+robotium_median
+tau_median
+uiautomator_median
+
+#percentages
+appium_median / espresso_median * 100
+robotium_median / espresso_median * 100
+tau_median / espresso_median * 100
+uiautomator_median / espresso_median * 100
+
 
 #standard deviations
 sd(appium_frame$runTime_seconds)
@@ -138,39 +151,57 @@ cohen.d(robotium_frame$runTime_seconds, tau_frame$runTime_seconds)
 
 
 #calculate failures
-#first the frames with failures
+print_fail_percentage <- function(test_frame){
+  #get number of rows in the frame that has more than 0 failures (a new frame is created inside parantheses)
+  frame_failures = nrow(test_frame[test_frame$failures > 0,])
+  fail_percentage = frame_failures / nrow(test_frame) * 100
+  fail_percentage
+}
+
+
+#########appium failure
 appium_frame_f <- read.csv("appium_amaze.csv")
-#get number of rows in the frame that has more than 0 failures (a new frame is created inside parantheses)
-appium_failures = nrow(appium_frame_f[appium_frame_f$failures > 0,])
+sum(appium_frame_f$failures > 0)
+nrow(appium_frame_f)
+print_fail_percentage(appium_frame_f)
 
-
+#########espresso failure
 espresso_frame_f <- read.csv("espresso_amaze.csv")
-#get number of rows in the frame that has more than 0 failures (a new frame is created inside parantheses)
-espresso_failures = nrow(espresso_frame_f[espresso_frame_f$failures > 0,])
+sum(espresso_frame_f$failures > 0)
+nrow(espresso_frame_f)
+print_fail_percentage(espresso_frame_f)
 
+#########robotium failure
 robotium_frame_f <- read.csv("robotium_amaze.csv")
-#get number of rows in the frame that has more than 0 failures (a new frame is created inside parantheses)
-robotium_failures = nrow(robotium_frame_f[robotium_frame_f$failures > 0,])
+sum(robotium_frame_f$failures > 0)
+nrow(robotium_frame_f)
+print_fail_percentage(robotium_frame_f)
 
+#########uiautomator failure
 uiautomator_frame_f <- read.csv("uiautomator_amaze.csv")
-#get number of rows in the frame that has more than 0 failures (a new frame is created inside parantheses)
-uiautomator_failures = nrow(uiautomator_frame_f[uiautomator_frame_f$failures > 0,])
+sum(uiautomator_frame_f$failures > 0)
+nrow(uiautomator_frame_f)
+print_fail_percentage(uiautomator_frame_f)
 
-tau_frame_f <- read.csv("tau_amaze.csv")
-tau_failures <- 
+#########tau failure
+tau_failures_n <- read.csv("tau_amaze_failures.csv")
+tau_failures_n
+nrow(tau_frame) + tau_failures_n
+tau_failures_n / (nrow(tau_frame) + tau_failures_n) * 100
 
-espresso_failures
-appium_failures
-robotium_failures
-uiautomator_failures
-tau_failures
 
-fail_percentage_espresso = espresso_failures / nrow(espresso_frame_f) * 100
-fail_percentage_appium = appium_failures / nrow(appium_frame_f) * 100
-fail_percentage_robotium = robotium_failures / nrow(robotium_frame_f) * 100
-fail_percentage_uiautomator = uiautomator_failures / nrow(uiautomator_frame_f) * 100
 
-fail_percentage_espresso
-fail_percentage_appium
-fail_percentage_robotium
-fail_percentage_uiautomator
+
+
+
+
+
+
+
+
+#wilcoxon tests, if they are wished at some point
+library(MASS)
+wilcox.test(appium_frame$runTime_seconds, espresso_frame$runTime_seconds)
+wilcox.test(appium_frame$runTime_seconds, tau_frame$runTime_seconds)
+wilcox.test(espresso_frame$runTime_seconds, robotium_frame$runTime_seconds)
+

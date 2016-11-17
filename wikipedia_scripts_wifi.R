@@ -100,6 +100,7 @@ combined_frame_all_apps <- rbind(combined_frame_amaze, combined_frame_wikipedia_
 
 #all network configurations combined
 combined_frame_all_networks <- rbind(combined_frame_wikipedia_n, combined_frame_wikipedia_n_5g, combined_frame_wikipedia_n_4g)
+combined_frame_wifi_4g_networks <- rbind(combined_frame_wikipedia_n, combined_frame_wikipedia_n_4g)
 
 
 
@@ -110,10 +111,10 @@ setwd("C:/users/Tomi/R/gradu_r/pictures")
 #boxplot from all apps frames combined
 
 ########## CHANGE NAME OF THE FILE ##########
-png(filename="all_apps_wikipedia_wifi_boxplot.png", width = 1060)
+png(filename="wikipedia_native_wifi_4g_boxplot.png")
 
 #the scale_x_discrete and limits can be used to order of entries in x axis
-plot = ggplot(combined_frame_all_apps, aes(x = toolname, y = runTime_seconds)) +
+plot = ggplot(combined_frame_wifi_4g_networks, aes(x = toolname, y = runTime_seconds)) +
   geom_boxplot() + 
   xlab("Configuration") + 
   ylab("Test set run time in seconds")
@@ -149,10 +150,21 @@ mean_espresso_n
 mean_tau_n
 mean_uiautomator_n
 
-median(appium_frame_n$runTime_seconds)
-median(espresso_frame_n$runTime_seconds)
-median(tau_frame_n$runTime_seconds)
-median(uiautomator_frame_n$runTime_seconds)
+appium_wifi_median <- median(appium_frame_n$runTime_seconds)
+espresso_wifi_median <- median(espresso_frame_n$runTime_seconds)
+tau_wifi_median <- median(tau_frame_n$runTime_seconds)
+uiautomator_wifi_median <- median(uiautomator_frame_n$runTime_seconds)
+
+appium_wifi_median
+espresso_wifi_median
+tau_wifi_median
+uiautomator_wifi_median
+
+#calculate percentages for median tool execution speed
+appium_wifi_median / espresso_wifi_median * 100
+tau_wifi_median / espresso_wifi_median * 100
+uiautomator_wifi_median / espresso_wifi_median * 100
+
 
 sd(appium_frame_n$runTime_seconds)
 sd(espresso_frame_n$runTime_seconds)
@@ -187,15 +199,25 @@ mean(espresso_frame_n_4g$runTime_seconds)
 mean(tau_frame_n_4g$runTime_seconds)
 mean(uiautomator_frame_n_4g$runTime_seconds)
 
-median(appium_frame_n_4g$runTime_seconds)
-median(espresso_frame_n_4g$runTime_seconds)
-median(tau_frame_n_4g$runTime_seconds)
-median(uiautomator_frame_n_4g$runTime_seconds)
+appium_4g_median <- median(appium_frame_n_4g$runTime_seconds)
+espresso_4g_median <- median(espresso_frame_n_4g$runTime_seconds)
+tau_4g_median <- median(tau_frame_n_4g$runTime_seconds)
+uiautomator_4g_median <- median(uiautomator_frame_n_4g$runTime_seconds)
+
+appium_4g_median
+espresso_4g_median
+tau_4g_median
+uiautomator_4g_median
 
 sd(appium_frame_n_4g$runTime_seconds)
 sd(espresso_frame_n_4g$runTime_seconds)
 sd(tau_frame_n_4g$runTime_seconds)
 sd(uiautomator_frame_n_4g$runTime_seconds)
+
+#percentage differences
+appium_4g_median / espresso_4g_median * 100
+tau_4g_median / espresso_4g_median * 100
+uiautomator_4g_median / espresso_4g_median * 100
 
 
 #other interesting means and medians
@@ -219,6 +241,7 @@ library(effsize, lib.loc = "C:/Gradu/gradu_r/effsize_0.6.4")
 #calculate the cohen's d compared to the fastest tool
 #wifi
 cohen.d(appium_frame_n$runTime_seconds, espresso_frame_n$runTime_seconds)
+cohen.d(espresso_frame_n$runTime_seconds, espresso_frame_n$runTime_seconds)
 cohen.d(uiautomator_frame_n$runTime_seconds, espresso_frame_n$runTime_seconds)
 cohen.d(tau_frame_n$runTime_seconds, espresso_frame_n$runTime_seconds)
 
@@ -253,19 +276,33 @@ print_fail_percentage <- function(test_frame){
 
 #WIFI
 
+#uiautomator_frame_n <- uiautomator_frame_n[!(uiautomator_frame_n$failures != 0),]
+
 #first the frames with failures
+########appium failure
 appium_frame_n_f <- read.csv("appium_wifi_native.csv")
+sum(appium_frame_n_f$failures > 0)
+nrow(appium_frame_n_f)
 print_fail_percentage(appium_frame_n_f)
 
+#########espresso failure
 espresso_frame_n_f <- read.csv("espresso_wifi_native.csv")
+sum(espresso_frame_n_f$failures > 0)
+nrow(espresso_frame_n_f)
 print_fail_percentage(espresso_frame_n_f)
 
+########uiautomator failure
 uiautomator_frame_n_f <- read.csv("uiautomator_wifi_native.csv")
+sum(uiautomator_frame_n_f$failures > 0)
+nrow(uiautomator_frame_n_f)
 print_fail_percentage(uiautomator_frame_n_f)
 
-#tau failures are just a raw value in a csv
+########tau failure
+#tau frame does not have rows with failed tests because how the tests were run
 tau_failures_n <- read.csv("tau_wifi_native_failures.csv")
-tau_failures_n / nrow(tau_frame_n) * 100
+tau_failures_n
+nrow(tau_frame_n) + tau_failures_n
+tau_failures_n / (nrow(tau_frame_n) + tau_failures_n) * 100
 
 #total number of failures
 espresso_failures_n

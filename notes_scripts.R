@@ -89,12 +89,23 @@ mean_tau
 mean_uiautomator
 
 #medians 
-median(notes_appium$runTime_seconds)
-median(notes_espresso$runTime_seconds)
-median(notes_robotium$runTime_seconds)
-median(notes_tau$runTime_seconds)
-median(notes_uiautomator$runTime_seconds)
+appium_median <- median(notes_appium$runTime_seconds)
+espresso_median <- median(notes_espresso$runTime_seconds)
+robotium_median <- median(notes_robotium$runTime_seconds)
+tau_median <- median(notes_tau$runTime_seconds)
+uiautomator_median <- median(notes_uiautomator$runTime_seconds)
 
+appium_median
+espresso_median
+robotium_median
+tau_median
+uiautomator_median
+
+#percentages
+appium_median / espresso_median * 100
+robotium_median / espresso_median * 100
+tau_median / espresso_median * 100
+uiautomator_median / espresso_median * 100
 
 #standard deviations
 sd(notes_appium$runTime_seconds)
@@ -157,29 +168,50 @@ cohen.d(notes_tau$runTime_seconds, notes_robotium$runTime_seconds)
 cohen.d(d,f)
 
 
-#calculate failure rates and such
+
 #calculate failures
+print_fail_percentage <- function(test_frame){
+  #get number of rows in the frame that has more than 0 failures (a new frame is created inside parantheses)
+  frame_failures = nrow(test_frame[test_frame$failures > 0,])
+  fail_percentage = frame_failures / nrow(test_frame) * 100
+  fail_percentage
+}
+
+
 #first the frames with failures
+#########appium failures
 appium_frame_f <- read.csv("appium_notes.csv")
-#get number of rows in the frame that has more than 0 failures (a new frame is created inside parantheses)
-appium_failures = nrow(appium_frame_f[appium_frame_f$failures > 0,])
+#appium_failures = nrow(appium_frame_f[appium_frame_f$failures > 0,])
+sum(appium_frame_f$failures > 0)
+nrow(appium_frame_f)
+print_fail_percentage(appium_frame_f)
 
-
+#########espresso failures
 espresso_frame_f <- read.csv("espresso_notes.csv")
-#get number of rows in the frame that has more than 0 failures (a new frame is created inside parantheses)
-espresso_failures = nrow(espresso_frame_f[espresso_frame_f$failures > 0,])
+sum(espresso_frame_f$failures > 0)
+nrow(espresso_frame_f)
+print_fail_percentage(espresso_frame_f)
 
+#########robotium failures
 robotium_frame_f <- read.csv("robotium_notes.csv")
-#get number of rows in the frame that has more than 0 failures (a new frame is created inside parantheses)
-robotium_failures = nrow(robotium_frame_f[robotium_frame_f$failures > 0,])
+sum(robotium_frame_f$failures > 0)
+nrow(robotium_frame_f)
+print_fail_percentage(robotium_frame_f)
 
+#########uiautomator failures
 uiautomator_frame_f <- read.csv("uiautomator_notes.csv")
-#get number of rows in the frame that has more than 0 failures (a new frame is created inside parantheses)
-uiautomator_failures = nrow(uiautomator_frame_f[uiautomator_frame_f$failures > 0,])
+sum(uiautomator_frame_f$failures > 0)
+nrow(uiautomator_frame_f)
+print_fail_percentage(uiautomator_frame_f)
 
-tau_frame_f <- read.csv("tau_amaze.csv")
+
+#########tau failures
+tau_frame <- read.csv("tau_notes.csv")
 #tau did not have any failures when the test suite was ran
 tau_failures <- 0
+tau_failures
+nrow(tau_frame) + tau_failures
+tau_failures / (nrow(tau_frame) + tau_failures) * 100
   
 espresso_failures
 appium_failures
